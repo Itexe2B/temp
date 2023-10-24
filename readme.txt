@@ -19,7 +19,7 @@ Un layout vertical contenant un layout horizontal pour nos boutons ajouter et su
 et une datagrid pour afficher les données de la table et l'utiliser comme interface de modification.
 
 Après avoir créé les layouts, boutons et datagrid, on les ajoute à notre fenêtre principale.
-Une fois les événements connectés, il nous reste à brancher le côté "backend" à notre "frontend".
+Une fois les événements connectés, il nous reste à brancher le côté "back-end" à notre "front-end".
 
 Ce style d'architecture est très simple et permet de faire des applications très rapidement.
 Cependant, il est très limité et ne permet pas de faire des applications complexes (pas de décomposition du frontend).
