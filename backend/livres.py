@@ -13,7 +13,7 @@ class Livres:
         # On recupere un livre en fonction de son id
         return c.request_with_params('select * from livres where id = ?', (id,))
 
-    def create(self, titre, id_auteur, id_genre):
+    def create(self, titre, id_auteur=1, id_genre=1):
         # On ajoute un livre
         return c.request_with_params('insert into livres (titre, id_auteur, id_genre) values (?, ?, ?)', (titre, id_auteur, id_genre))
 

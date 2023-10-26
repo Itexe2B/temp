@@ -9,6 +9,8 @@ def connect():
 
     #La connexion et le curseur sont retournés pour pouvoir les utiliser dans les autres classes
     #Ils servent notamment à faire les requêtes
+    cursor.execute('PRAGMA foreign_keys = ON;') #On active les foreign keys
+    conn.commit();
     return conn, cursor
 
 def close(conn):

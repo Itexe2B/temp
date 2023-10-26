@@ -36,7 +36,7 @@ class Emprunteurs:
         # On recupere les emprunts d'un emprunteur
         return c.request_with_params('select * from emprunts where id_emprunteur = ?', (id_emprunteur,))
 
-    def emprunter_livre(self, id_emprunteur, id_livre, date=None):
+    def emprunter_livre(self, id_emprunteur=1, id_livre=1, date=None):
         # On vérifie si une date est passée en paramètre
         if date is None:
             # Si aucune date n'est passée en paramètre, on met la date du jour (défault en bdd)
