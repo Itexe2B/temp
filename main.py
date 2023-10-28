@@ -1,5 +1,7 @@
+import sqlite3
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction, QTableWidget, QTableWidgetItem, \
+    QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QMessageBox
 from backend.genres import Genres
 from backend.auteurs import Auteurs
 from backend.emprunteurs import Emprunteurs
@@ -136,13 +138,13 @@ class MainWindow(QMainWindow):
             Emprunteurs().create('')
             self.get_all(Emprunteurs(), 'Emprunteurs')
         elif MainWindow.TYPE_TABLE == 'Emprunts':
-            Emprunteurs().emprunter_livre('', '')
+            Emprunteurs().emprunter_livre()
             self.get_all(Emprunts(), 'Emprunts')
         elif MainWindow.TYPE_TABLE == 'Genres':
             Genres().create('')
             self.get_all(Genres(), 'Genres')
         elif MainWindow.TYPE_TABLE == 'Livres':
-            Livres().create('', '', '')
+            Livres().create('')
             self.get_all(Livres(), 'Livres')
         else:
             raise('Type de table inconnu')
@@ -181,21 +183,30 @@ class MainWindow(QMainWindow):
         # On met à jour la bdd en fonction du type de table
         # On récupère l'id de la ligne modifiée
         id = self.table.item(row, 0).text()
+        last_value = self.table.item(row, column).text()
 
         # On utilise la fonction update de chaque classe pour mettre à jour une ligne
         # Inutile de recharger les données a ce moment la.
-        if MainWindow.TYPE_TABLE == 'Auteurs':
-            Auteurs().update(id, self.table.item(row, 1).text())
-        elif MainWindow.TYPE_TABLE == 'Emprunteurs':
-            Emprunteurs().update(id, self.table.item(row, 1).text())
-        elif MainWindow.TYPE_TABLE == 'Emprunts':
-            Emprunts().update(id, self.table.item(row, 1).text(), self.table.item(row, 2).text())
-        elif MainWindow.TYPE_TABLE == 'Genres':
-            Genres().update(id, self.table.item(row, 1).text())
-        elif MainWindow.TYPE_TABLE == 'Livres':
-            Livres().update(id, self.table.item(row, 1).text(), self.table.item(row, 2).text(), self.table.item(row, 3).text())
-        else:
-            raise ('Type de table inconnu')
+        try:
+            if MainWindow.TYPE_TABLE == 'Auteurs':
+                Auteurs().update(id, self.table.item(row, 1).text())
+            elif MainWindow.TYPE_TABLE == 'Emprunteurs':
+                Emprunteurs().update(id, self.table.item(row, 1).text())
+            elif MainWindow.TYPE_TABLE == 'Emprunts':
+                Emprunts().update(id, self.table.item(row, 1).text(), self.table.item(row, 2).text(), self.table.item(row, 3).text())
+            elif MainWindow.TYPE_TABLE == 'Genres':
+                Genres().update(id, self.table.item(row, 1).text())
+            elif MainWindow.TYPE_TABLE == 'Livres':
+                Livres().update(id, self.table.item(row, 1).text(), self.table.item(row, 2).text(), self.table.item(row, 3).text())
+            else:
+                raise ('Type de table inconnu')
+        except sqlite3.IntegrityError:
+            print("Vous ne pouvez pas mettre une clée qui n'existe pas.")
+            MessageBox = QMessageBox()
+            MessageBox.setText("Vous ne pouvez pas mettre une clée qui n'existe pas.")
+            MessageBox.setWindowTitle("Erreur")
+            MessageBox.setStandardButtons(QMessageBox.Ok)
+            MessageBox.exec_()
 
 if __name__ == "__main__":
     # On lance l'application
